@@ -4,6 +4,8 @@ name: Execução Diária
 on:
   schedule:
     - cron: '0 8 * * *'  # Executa todos os dias às 08h UTC (5h no horário de Brasília)
+  workflow_dispatch:
+    
 jobs:
   build:
     runs-on: ubuntu-latest

@@ -1,18 +1,51 @@
 # .github/workflows/automacao.yml
 
+#name: Execução Diária
+#on:
+#  schedule:
+#    - cron: '0 8 * * *'  # Executa todos os dias às 08h UTC (5h no horário de Brasília)
+#  workflow_dispatch:
+    
+#jobs:
+#  build:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v3
+#      - name: Instalar dependências
+#        run: pip install -r requirements.txt
+
+#      - name: Executar robô
+#        run: python bot.py
+
 name: Execução Diária
+
 on:
   schedule:
-    - cron: '0 8 * * *'  # Executa todos os dias às 08h UTC (5h no horário de Brasília)
+    - cron: '0 8 * * *'
   workflow_dispatch:
-    
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
+
       - name: Instalar dependências
         run: pip install -r requirements.txt
 
       - name: Executar robô
         run: python bot.py
+
+      - name: Configurar Git para commit
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+      - name: Adicionar mudanças e fazer commit
+        run: |
+          git add dados/relatorio.csv
+          git commit -m "Atualizando relatorio.csv automaticamente" || echo "Nada para commitar"
+
+      - name: Fazer push das mudanças
+        run: git push
